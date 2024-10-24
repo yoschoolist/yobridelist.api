@@ -1,0 +1,44 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [postgis]
+}
+
+enum UserRole {
+  member
+  manager
+  admin
+  superadmin
+}
+
+// Rest of the schema remains the same, updating User model
+model User {
+  id            Int             @id @default(autoincrement())
+  email         String          @unique @db.VarChar(255)
+  passwordHash  String          @db.VarChar(255)
+  fullName      String          @db.VarChar(100)
+  role          UserRole        @default(member)
+  isActive      Boolean         @default(true)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  vendor        Vendor?
+  bookings      Booking[]
+  reviews       Review[]
+  blogPosts     BlogPost[]
+  conversations Conversation[]
+  messages      Message[]
+  forumTopics   ForumTopic[]
+  forumPosts    ForumPost[]
+
+  @@map("users")
+}
+
+// Rest of the models remain the same...
