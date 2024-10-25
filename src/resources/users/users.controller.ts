@@ -2,9 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { PoliciesGuard } from '../casl/guards/policies.guard';
-import { CheckPolicies } from '../casl/decorators/check-policies.decorator';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
+import { PoliciesGuard } from '../../casl/guards/policies.guard';
+import { CheckPolicies } from '../../casl/decorators/check-policies.decorator';
 import { Action } from '@casl/ability';
 import { User } from '@prisma/client';
 

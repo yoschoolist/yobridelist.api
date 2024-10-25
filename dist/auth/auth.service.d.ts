@@ -14,6 +14,6 @@ export declare class AuthService {
         updatedAt: Date;
     }>;
     login(user: any): Promise<{
-        access_token: any;
+        access_token: string;
     }>;
 }
