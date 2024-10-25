@@ -9,8 +9,8 @@ export declare class ReviewsService {
     update(id: number, data: Prisma.ReviewUpdateInput): Promise<Review>;
     remove(id: number): Promise<Review>;
     getVendorStats(vendorId: number): Promise<{
-        totalReviews: any;
+        totalReviews: number;
         averageRating: number;
-        ratingDistribution: any;
+        ratingDistribution: Record<number, number>;
     }>;
 }

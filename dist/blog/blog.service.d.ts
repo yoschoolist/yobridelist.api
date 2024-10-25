@@ -8,6 +8,27 @@ export declare class BlogService {
     findPostBySlug(slug: string): Promise<BlogPost | null>;
     updatePost(id: number, data: Prisma.BlogPostUpdateInput): Promise<BlogPost>;
     removePost(id: number): Promise<BlogPost>;
-    findAllCategories(): Promise<any>;
-    findAllTags(): Promise<any>;
+    findAllCategories(): Promise<({
+        _count: {
+            blogPosts: number;
+        };
+    } & {
+        name: string;
+        id: number;
+        createdAt: Date;
+        updatedAt: Date;
+        description: string | null;
+        slug: string;
+    })[]>;
+    findAllTags(): Promise<({
+        _count: {
+            blogPosts: number;
+        };
+    } & {
+        name: string;
+        id: number;
+        createdAt: Date;
+        updatedAt: Date;
+        slug: string;
+    })[]>;
 }

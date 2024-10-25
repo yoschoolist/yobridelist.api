@@ -5,9 +5,64 @@ import { VendorCategory } from '@prisma/client';
 export declare class VendorsController {
     private readonly vendorsService;
     constructor(vendorsService: VendorsService);
-    create(createVendorDto: CreateVendorDto): Promise<Vendor>;
-    findAll(category?: VendorCategory): Promise<Vendor[]>;
-    findOne(id: string): Promise<any>;
-    update(id: string, updateVendorDto: UpdateVendorDto): Promise<Vendor>;
-    remove(id: string): Promise<Vendor>;
+    create(createVendorDto: CreateVendorDto): Promise<{
+        id: number;
+        createdAt: Date;
+        updatedAt: Date;
+        businessName: string;
+        category: import("@prisma/client").$Enums.VendorCategory;
+        description: string | null;
+        contactEmail: string | null;
+        contactPhone: string | null;
+        websiteUrl: string | null;
+        userId: number;
+    }>;
+    findAll(category?: VendorCategory): Promise<{
+        id: number;
+        createdAt: Date;
+        updatedAt: Date;
+        businessName: string;
+        category: import("@prisma/client").$Enums.VendorCategory;
+        description: string | null;
+        contactEmail: string | null;
+        contactPhone: string | null;
+        websiteUrl: string | null;
+        userId: number;
+    }[]>;
+    findOne(id: string): Promise<{
+        id: number;
+        createdAt: Date;
+        updatedAt: Date;
+        businessName: string;
+        category: import("@prisma/client").$Enums.VendorCategory;
+        description: string | null;
+        contactEmail: string | null;
+        contactPhone: string | null;
+        websiteUrl: string | null;
+        userId: number;
+    }>;
+    update(id: string, updateVendorDto: UpdateVendorDto): Promise<{
+        id: number;
+        createdAt: Date;
+        updatedAt: Date;
+        businessName: string;
+        category: import("@prisma/client").$Enums.VendorCategory;
+        description: string | null;
+        contactEmail: string | null;
+        contactPhone: string | null;
+        websiteUrl: string | null;
+        userId: number;
+    }>;
+    remove(id: string): Promise<{
+        id: number;
+        createdAt: Date;
+        updatedAt: Date;
+        businessName: string;
+        category: import("@prisma/client").$Enums.VendorCategory;
+        description: string | null;
+        contactEmail: string | null;
+        contactPhone: string | null;
+        websiteUrl: string | null;
+        userId: number;
+    }>;
 }

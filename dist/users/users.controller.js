@@ -21,7 +21,6 @@ const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
 const policies_guard_1 = require("../casl/guards/policies.guard");
 const check_policies_decorator_1 = require("../casl/decorators/check-policies.decorator");
 const ability_1 = require("@casl/ability");
-const client_1 = require("@prisma/client");
 let UsersController = class UsersController {
     constructor(usersService) {
         this.usersService = usersService;

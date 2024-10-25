@@ -8,5 +8,11 @@ export declare class LocationsService {
     findOne(id: number): Promise<VendorLocation | null>;
     update(id: number, data: Prisma.VendorLocationUpdateInput): Promise<VendorLocation>;
     remove(id: number): Promise<VendorLocation>;
-    findAllCountries(): Promise<any>;
+    findAllCountries(): Promise<{
+        name: string;
+        id: number;
+        createdAt: Date;
+        updatedAt: Date;
+        code: string;
+    }[]>;
 }
