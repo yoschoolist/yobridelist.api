@@ -19,7 +19,7 @@ export interface GetBlogService {
      * @param detailParams - options to contains songs and albums
      */
     findByIdWithDetails(
-        id: number,
+        id: string,
         detailParams?: BlogDetailParamDto,
     ): Promise<BlogDetailResponseDto>;
 }

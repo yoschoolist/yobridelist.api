@@ -9,39 +9,31 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CaslAbilityFactory = void 0;
 const common_1 = require("@nestjs/common");
 const ability_1 = require("@casl/ability");
+const prisma_1 = require("@casl/prisma");
 const client_1 = require("@prisma/client");
+const casl_enum_1 = require("./enums/casl.enum");
 let CaslAbilityFactory = class CaslAbilityFactory {
     createForUser(user) {
-        const { can, cannot, build } = new ability_1.AbilityBuilder(ability_1.createMongoAbility);
-        if (user.role === client_1.UserRole.superadmin) {
-            can('manage', 'all');
+        const { can, cannot, build } = new ability_1.AbilityBuilder(prisma_1.createPrismaAbility);
+        if (user?.role === client_1.Role.ADMIN) {
+            can(casl_enum_1.Action.Manage, "all");
+            can(casl_enum_1.Action.Read, "Dashboard");
+            cannot(casl_enum_1.Action.Update, "Account", { role: client_1.Role.ADMIN });
+            cannot(casl_enum_1.Action.Delete, "Account", { role: client_1.Role.ADMIN });
         }
-        else if (user.role === client_1.UserRole.admin) {
-            can('manage', 'all');
-            cannot('delete', client_1.User, { role: client_1.UserRole.superadmin });
-            cannot('update', client_1.User, { role: client_1.UserRole.superadmin });
+        else if (user?.role === client_1.Role.MEMBER) {
+            can(casl_enum_1.Action.Read, "Playlist", {
+                OR: [{ status: client_1.PlaylistStatus.PUBLIC }, { userId: user.sub }],
+            });
+            can(casl_enum_1.Action.Update, "Playlist", { userId: user.sub });
+            can(casl_enum_1.Action.Delete, "Playlist", { userId: user.sub });
         }
-        else if (user.role === client_1.UserRole.manager) {
-            can('read', 'all');
-            can('create', [client_1.Vendor, client_1.Service, client_1.BlogPost]);
-            can('update', [client_1.Vendor, client_1.Service], { 'vendor.userId': user.id });
-            can('update', client_1.BlogPost, { authorId: user.id });
-            can('delete', client_1.BlogPost, { authorId: user.id });
-            can('manage', [client_1.Booking, client_1.Review]);
+        else if (!user) {
+            can(casl_enum_1.Action.Read, "Playlist", {
+                status: client_1.PlaylistStatus.PUBLIC,
+            });
         }
-        else {
-            can('read', [client_1.Vendor, client_1.Service, client_1.BlogPost, client_1.ForumTopic]);
-            can('create', [client_1.Booking, client_1.Review, client_1.ForumTopic, client_1.ForumPost]);
-            can('update', client_1.Booking, { userId: user.id });
-            can('update', client_1.Review, { userId: user.id });
-            can('update', client_1.ForumPost, { userId: user.id });
-            can('delete', client_1.ForumPost, { userId: user.id });
-            can('read', client_1.User, { id: user.id });
-            can('update', client_1.User, { id: user.id });
-        }
-        return build({
-            detectSubjectType: (item) => item.constructor,
-        });
+        return build();
     }
 };
 exports.CaslAbilityFactory = CaslAbilityFactory;

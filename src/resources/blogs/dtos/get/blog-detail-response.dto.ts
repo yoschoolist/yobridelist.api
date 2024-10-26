@@ -8,7 +8,7 @@ import { BlogTagResponseDto } from "./blog-tag-response.dto";
 export class BlogDetailResponseDto implements BlogPost {
     @ApiProperty()
     @Expose()
-    id: number;
+    id: string;
 
     @ApiProperty()
     @Expose()
@@ -40,7 +40,7 @@ export class BlogDetailResponseDto implements BlogPost {
 
     @ApiProperty()
     @Expose()
-    featuredImageUrl: string;
+    imageUrl: string;
 
     @ApiProperty()
     @Expose()
@@ -58,11 +58,15 @@ export class BlogDetailResponseDto implements BlogPost {
 
     @ApiProperty()
     @Expose()
-    authorId: number;
+    authorId: string;
 
     @ApiProperty()
     @Expose()
-    featuredImageId: string;
+    views: number;
+
+    @ApiProperty()
+    @Expose()
+    imageId: string;
 
     @ApiProperty({
         type: BlogCategoryResponseDto,

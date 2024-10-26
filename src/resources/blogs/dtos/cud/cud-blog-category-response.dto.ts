@@ -6,7 +6,7 @@ import { Exclude, Expose } from "class-transformer";
 export class CudBlogCategoryResponseDto implements BlogCategory {
     @ApiProperty()
     @Expose()
-    id: number;
+    id: string;
 
     @ApiProperty()
     @Expose()

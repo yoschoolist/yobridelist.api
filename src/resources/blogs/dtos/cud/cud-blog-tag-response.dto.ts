@@ -6,7 +6,7 @@ import { Exclude, Expose } from "class-transformer";
 export class CudBlogTagResponseDto implements BlogTag {
     @ApiProperty()
     @Expose()
-    id: number;
+    id: string;
 
     @ApiProperty()
     @Expose()

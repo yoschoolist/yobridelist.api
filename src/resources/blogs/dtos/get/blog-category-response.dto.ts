@@ -6,7 +6,7 @@ import { Exclude, Expose, plainToInstance } from "class-transformer";
 export class BlogCategoryResponseDto implements BlogCategory {
     @ApiProperty()
     @Expose()
-    id: number;
+    id: string;
 
     @ApiProperty()
     @Expose()

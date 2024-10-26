@@ -1,0 +1,77 @@
+import { AccountParamDto } from "../dtos/query-params/account-param.dto";
+import { UpdateUserDto } from "../dtos/update-user.dto";
+import { GetUserService } from "../interfaces/get-user-service.interface";
+import { CudUserService } from "../interfaces/cud-user-service.interface";
+export declare class AccountsController {
+    private readonly getUserService;
+    private readonly cudUserService;
+    constructor(getUserService: GetUserService, cudUserService: CudUserService);
+    getAccounts(accountParams: AccountParamDto): Promise<import("../../../common/dtos/paged-response.dto").PagedResponseDto<{
+        name: string;
+        id: number;
+        email: string;
+        hashedPassword: string | null;
+        imageUrl: string | null;
+        imageId: string | null;
+        emailConfirmed: boolean;
+        locked: boolean;
+        role: import("@prisma/client").$Enums.UserRole;
+        birthDate: Date | null;
+        gender: import("@prisma/client").$Enums.Gender | null;
+        about: string | null;
+        alias: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+    }>>;
+    getAccountById(id: string): Promise<{
+        name: string;
+        id: number;
+        email: string;
+        hashedPassword: string | null;
+        imageUrl: string | null;
+        imageId: string | null;
+        emailConfirmed: boolean;
+        locked: boolean;
+        role: import("@prisma/client").$Enums.UserRole;
+        birthDate: Date | null;
+        gender: import("@prisma/client").$Enums.Gender | null;
+        about: string | null;
+        alias: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+    }>;
+    updateUser(id: string, updateUserDto: UpdateUserDto): Promise<{
+        name: string;
+        id: number;
+        email: string;
+        hashedPassword: string | null;
+        imageUrl: string | null;
+        imageId: string | null;
+        emailConfirmed: boolean;
+        locked: boolean;
+        role: import("@prisma/client").$Enums.UserRole;
+        birthDate: Date | null;
+        gender: import("@prisma/client").$Enums.Gender | null;
+        about: string | null;
+        alias: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+    }>;
+    deleteAccount(id: string): Promise<{
+        name: string;
+        id: number;
+        email: string;
+        hashedPassword: string | null;
+        imageUrl: string | null;
+        imageId: string | null;
+        emailConfirmed: boolean;
+        locked: boolean;
+        role: import("@prisma/client").$Enums.UserRole;
+        birthDate: Date | null;
+        gender: import("@prisma/client").$Enums.Gender | null;
+        about: string | null;
+        alias: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+    }>;
+}

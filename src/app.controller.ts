@@ -18,7 +18,7 @@ import {
 import { TransformDataInterceptor } from "./common/interceptors/transform-data.interceptor";
 import { SearchResponseDto } from "./common/dtos/search-response.dto";
 import { ACCESS_TOKEN } from "./auth/constants";
-//import { Section } from "./section/section.dto";
+import { Section } from "./section/section.dto";
 
 @ApiTags("")
 @Controller({
@@ -28,13 +28,13 @@ import { ACCESS_TOKEN } from "./auth/constants";
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  /*@ApiOperation({ summary: "Get sections for the home page" })
+  @ApiOperation({ summary: "Get sections for the home page" })
   @ApiBearerAuth(ACCESS_TOKEN)
   @ApiOkResponse({ type: Section, isArray: true })
   @Get("/sections")
   async getSections() {
       return this.appService.getSections();
-  }*/
+  }
 
   @ApiOperation({ summary: "Search resources" })
   @ApiQuery({

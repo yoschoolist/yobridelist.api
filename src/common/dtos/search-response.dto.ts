@@ -1,8 +1,10 @@
 import { ApiProperty } from "@nestjs/swagger";
 //import { Album, Artist, Genre, Playlist, Song, User } from "@prisma/client";
-import { BlogPost } from "@prisma/client";
+import { User, BlogPost } from "@prisma/client";
 import { Expose, Transform } from "class-transformer";
+import { UserResponseDto } from "src/resources/users/dtos/get/user-response.dto";
 import { BlogResponseDto } from "src/resources/blogs/dtos/get/blog-response.dto";
+
 
 import { PagedResponseDto } from "./paged-response.dto";
 
@@ -48,7 +50,7 @@ export class SearchResponseDto {
         value.results = ArtistResponseDto.toArtistResponseDto(value.results);
         return value;
     })
-    artists: PagedResponseDto<Artist>;
+    artists: PagedResponseDto<Artist>;*/
 
     @ApiProperty({ type: PagedResponseDto<UserResponseDto> })
     @Expose()
@@ -56,7 +58,7 @@ export class SearchResponseDto {
         value.results = UserResponseDto.toUserResponseDto(value.results);
         return value;
     })
-    users: PagedResponseDto<User>;*/
+    users: PagedResponseDto<User>;
 
     @ApiProperty({ type: PagedResponseDto<BlogResponseDto> })
     @Expose()

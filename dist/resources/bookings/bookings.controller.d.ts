@@ -8,50 +8,50 @@ export declare class BookingsController {
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        userId: number;
-        bookingDate: Date;
         status: import("@prisma/client").$Enums.BookingStatus;
+        userId: number;
         vendorId: number;
         serviceId: number;
+        bookingDate: Date;
     }>;
     findAll(userId?: string, vendorId?: string): Promise<{
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        userId: number;
-        bookingDate: Date;
         status: import("@prisma/client").$Enums.BookingStatus;
+        userId: number;
         vendorId: number;
         serviceId: number;
+        bookingDate: Date;
     }[]>;
     findOne(id: string): Promise<{
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        userId: number;
-        bookingDate: Date;
         status: import("@prisma/client").$Enums.BookingStatus;
+        userId: number;
         vendorId: number;
         serviceId: number;
+        bookingDate: Date;
     }>;
     updateStatus(id: string, updateStatusDto: UpdateBookingStatusDto): Promise<{
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        userId: number;
-        bookingDate: Date;
         status: import("@prisma/client").$Enums.BookingStatus;
+        userId: number;
         vendorId: number;
         serviceId: number;
+        bookingDate: Date;
     }>;
     remove(id: string): Promise<{
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        userId: number;
-        bookingDate: Date;
         status: import("@prisma/client").$Enums.BookingStatus;
+        userId: number;
         vendorId: number;
         serviceId: number;
+        bookingDate: Date;
     }>;
 }

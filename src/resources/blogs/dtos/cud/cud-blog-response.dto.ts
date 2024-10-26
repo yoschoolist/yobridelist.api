@@ -6,7 +6,7 @@ import { Exclude, Expose } from "class-transformer";
 export class CudBlogResponseDto implements BlogPost {
     @ApiProperty()
     @Expose()
-    id: number;
+    id: string;
 
     @ApiProperty()
     @Expose()
@@ -34,6 +34,10 @@ export class CudBlogResponseDto implements BlogPost {
 
     @ApiProperty()
     @Expose()
+    views: number;
+
+    @ApiProperty()
+    @Expose()
     status: string;
     
     createdAt: Date;
@@ -44,5 +48,5 @@ export class CudBlogResponseDto implements BlogPost {
     publishedAt: Date;
 
 
-    authorId: number;
+    authorId: string;
 }

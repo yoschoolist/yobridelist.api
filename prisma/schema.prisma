@@ -13,18 +13,6 @@ datasource db {
   extensions = [postgis]
 }
 
-// Enums
-enum VendorCategory {
-  photographer
-  venue
-  catering
-  decor
-  attire
-  music
-  beauty
-  planner
-}
-
 enum BookingStatus {
   pending
   confirmed
@@ -72,11 +60,10 @@ enum BlogStatus {
 
 // Rest of the schema remains the same, updating User model
 model User {
-  id            Int             @id @default(autoincrement())
+  id String @id @default(cuid())
   email         String          @unique @db.VarChar(255)
   hashedPassword        String?        @db.Text
   name      String          @db.VarChar(100)
-  isActive      Boolean         @default(true)
   imageUrl              String?        @db.Text
   imageId               String?
   emailConfirmed        Boolean        @default(false)
@@ -98,15 +85,18 @@ model User {
   forumPosts    ForumPost[]
   tokens        Token[]
 
+  likedVendors          UserLikeVendor[]
+  followingVendors      UserFollowVendor[]
+
   @@map("users")
 }
 
 model Token {
-  id            Int             @id @default(autoincrement())
+  id String @id @default(cuid())
   token       String     
   expiryTime  DateTime
   type        TokenType
-  userId      Int
+  userId      String
 
   user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -118,7 +108,7 @@ model Token {
 
 // Models
 model Country {
-  id               Int              @id @default(autoincrement())
+  id String @id @default(cuid())
   name             String           @db.VarChar(100)
   code             String           @unique @db.Char(2)
   vendorLocations  VendorLocation[]
@@ -129,11 +119,11 @@ model Country {
 }
 
 model Vendor {
-  id             Int              @id @default(autoincrement())
-  userId         Int              @unique
+  id String @id @default(cuid())
+  userId         String             @unique
   user           User             @relation(fields: [userId], references: [id])
   businessName   String           @db.VarChar(255)
-  category       VendorCategory
+  categories      VendorCategory[]
   description    String?
   contactEmail   String?          @db.VarChar(255)
   contactPhone   String?          @db.VarChar(20)
@@ -147,14 +137,29 @@ model Vendor {
   photos         Photo[]
   conversations  Conversation[]
 
+  Followers   UserFollowVendor[]
+  UserLikes   UserLikeVendor[]
+
   @@map("vendors")
 }
 
+model Category {
+  id String @id @default(cuid())
+  name        String       @db.VarChar(100)
+  slug        String       @unique @db.VarChar(100)
+  description String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  vendors      VendorCategory[]
+
+  @@map("categories")
+}
+
 model VendorLocation {
-  id                  Int      @id @default(autoincrement())
-  vendorId            Int
+  id String @id @default(cuid())
+  vendorId            String
   vendor              Vendor   @relation(fields: [vendorId], references: [id])
-  countryId           Int
+  countryId           String
   country             Country  @relation(fields: [countryId], references: [id])
   locationName        String?  @db.VarChar(255)
   isPrimary           Boolean  @default(false)
@@ -173,9 +178,41 @@ model VendorLocation {
   @@map("vendor_locations")
 }
 
+model VendorCategory {
+  vendorId  String
+  vendor    Vendor    @relation(fields: [vendorId], references: [id])
+  categoryId    String
+  category      Category      @relation(fields: [categoryId], references: [id])
+
+  @@unique([vendorId, categoryId])
+  @@map("_VendorToCategory")
+}
+
+model UserLikeVendor {
+  userId   String
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  vendorId String
+  vendor   Vendor      @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  likedAt  DateTime  @default(now())
+
+  @@unique([userId, vendorId])
+  @@map("_UserToLikedVendor")
+}
+
+model UserFollowVendor {
+  userId   String
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  vendorId String
+  vendor   Vendor      @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  followedAt  DateTime  @default(now())
+
+  @@unique([userId, vendorId])
+  @@map("_UserToFollowVendor")
+}
+
 model Service {
-  id          Int       @id @default(autoincrement())
-  vendorId    Int
+  id String @id @default(cuid())
+  vendorId    String
   vendor      Vendor    @relation(fields: [vendorId], references: [id])
   name        String    @db.VarChar(255)
   description String?
@@ -188,12 +225,12 @@ model Service {
 }
 
 model Booking {
-  id        Int           @id @default(autoincrement())
-  userId    Int
+  id String @id @default(cuid())
+  userId    String
   user      User          @relation(fields: [userId], references: [id])
-  vendorId  Int
+  vendorId  String
   vendor    Vendor        @relation(fields: [vendorId], references: [id])
-  serviceId Int
+  serviceId String
   service   Service       @relation(fields: [serviceId], references: [id])
   bookingDate DateTime    @db.Date
   status    BookingStatus @default(pending)
@@ -204,10 +241,10 @@ model Booking {
 }
 
 model Review {
-  id        Int      @id @default(autoincrement())
-  userId    Int
+  id String @id @default(cuid())
+  userId    String
   user      User     @relation(fields: [userId], references: [id])
-  vendorId  Int
+  vendorId  String
   vendor    Vendor   @relation(fields: [vendorId], references: [id])
   rating    Int
   comment   String?
@@ -218,8 +255,8 @@ model Review {
 }
 
 model Photo {
-  id        Int      @id @default(autoincrement())
-  vendorId  Int
+  id String @id @default(cuid())
+  vendorId  String
   vendor    Vendor   @relation(fields: [vendorId], references: [id])
   url       String   @db.VarChar(255)
   caption   String?  @db.VarChar(255)
@@ -230,7 +267,7 @@ model Photo {
 }
 
 model BlogCategory {
-  id          Int        @id @default(autoincrement())
+  id String @id @default(cuid())
   name        String     @db.VarChar(100)
   slug        String     @unique @db.VarChar(100)
   description String?
@@ -242,7 +279,7 @@ model BlogCategory {
 }
 
 model BlogTag {
-  id        Int        @id @default(autoincrement())
+  id String @id @default(cuid())
   name      String     @db.VarChar(50)
   slug      String     @unique @db.VarChar(50)
   createdAt DateTime   @default(now())
@@ -253,14 +290,15 @@ model BlogTag {
 }
 
 model BlogPost {
-  id                Int          @id @default(autoincrement())
+  id String @id @default(cuid())
   title             String       @db.VarChar(255)
   slug              String       @unique @db.VarChar(255)
   content           String
   excerpt           String?
-  imageUrl  String?      @db.VarChar(255)
-  imageId  String? 
-  authorId          Int
+  imageUrl          String?      @db.VarChar(255)
+  imageId           String?      
+  views             Int           @default(0)
+  authorId          String
   author            User         @relation(fields: [authorId], references: [id])
   status            String       @default("draft") @db.VarChar(20)
   publishedAt       DateTime?
@@ -273,10 +311,10 @@ model BlogPost {
 }
 
 model Conversation {
-  id             Int       @id @default(autoincrement())
-  userId         Int
+  id String @id @default(cuid())
+  userId         String
   user           User      @relation(fields: [userId], references: [id])
-  vendorId       Int
+  vendorId       String
   vendor         Vendor    @relation(fields: [vendorId], references: [id])
   lastMessageAt  DateTime?
   createdAt      DateTime  @default(now())
@@ -287,10 +325,10 @@ model Conversation {
 }
 
 model Message {
-  id             Int           @id @default(autoincrement())
-  conversationId Int
+  id String @id @default(cuid())
+  conversationId String
   conversation   Conversation  @relation(fields: [conversationId], references: [id])
-  senderId       Int
+  senderId       String
   sender         User          @relation(fields: [senderId], references: [id])
   content        String
   status         MessageStatus @default(sent)
@@ -301,7 +339,7 @@ model Message {
 }
 
 model ForumCategory {
-  id          Int          @id @default(autoincrement())
+  id String @id @default(cuid())
   name        String       @db.VarChar(100)
   slug        String       @unique @db.VarChar(100)
   description String?
@@ -313,10 +351,10 @@ model ForumCategory {
 }
 
 model ForumTopic {
-  id         Int           @id @default(autoincrement())
-  categoryId Int
+  id String @id @default(cuid())
+  categoryId String
   category   ForumCategory @relation(fields: [categoryId], references: [id])
-  userId     Int
+  userId     String
   user       User          @relation(fields: [userId], references: [id])
   title      String        @db.VarChar(255)
   content    String
@@ -331,10 +369,10 @@ model ForumTopic {
 }
 
 model ForumPost {
-  id        Int             @id @default(autoincrement())
-  topicId   Int
+  id String @id @default(cuid())
+  topicId   String
   topic     ForumTopic      @relation(fields: [topicId], references: [id])
-  userId    Int
+  userId    String
   user      User            @relation(fields: [userId], references: [id])
   content   String
   status    ForumPostStatus @default(active)

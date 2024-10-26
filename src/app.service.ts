@@ -6,12 +6,16 @@ import {
     CACHE_SERVICE,
     CacheService,
 } from "./cache/interfaces/cache.interface";
+import { USER_SERVICES } from "./resources/users/interfaces/constants";
+import { GetUserService } from "./resources/users/interfaces/get-user-service.interface";
 import { BLOG_SERVICES } from "./resources/blogs/interfaces/constants";
 import { GetBlogService } from "./resources/blogs/interfaces/get-blog-service.interface";
 
 @Injectable()
 export class AppService {
     constructor(
+        @Inject(USER_SERVICES.GetUserService)
+        private readonly getUserService: GetUserService,
         @Inject(BLOG_SERVICES.GetBlogService)
         private readonly getBlogService: GetBlogService,
         private readonly sectionsService: SectionsService,
@@ -55,8 +59,14 @@ export class AppService {
             { take, allowCount } = options;
 
         //const [songs, albums, playlists, genres, artists, users] =
-        const [blogs] =
+        const [users, blogs] =
             await Promise.all([
+                this.getUserService.get({
+                    skip,
+                    take,
+                    allowCount,
+                    keyword,
+                }),
                 this.getBlogService.get({
                     skip,
                     take,
@@ -86,14 +96,9 @@ export class AppService {
                     take,
                     allowCount,
                     keyword,
-                }),
-                this.getUserService.get({
-                    skip,
-                    take,
-                    allowCount,
-                    keyword,
                 }),*/
-            ]);
+                
+        ]);
 
         /*return {
             users,
@@ -104,6 +109,7 @@ export class AppService {
             artists,
         };*/
         return {
+            users,
             blogs,
         };
     }

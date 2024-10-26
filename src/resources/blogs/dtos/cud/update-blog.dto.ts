@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Transform, Type } from "class-transformer";
 import { IsDate, IsInt, IsArray, IsNotEmpty, IsOptional, IsString } from "class-validator";
-
+import { MapperService } from "src/common/utils/mapper.service";
 export class UpdateBlogDto {
     @ApiProperty()
     @IsNotEmpty()
@@ -29,9 +29,25 @@ export class UpdateBlogDto {
     @IsString()
     imageId: string;
 
+    @ApiProperty({ required: false })
+    @Transform(({ value }) => MapperService.mapArray(value))
+    @IsArray()
+    @IsNotEmpty({ each: true })
+    @IsString({ each: true })
+    @IsOptional()
+    categoryIds?: string[] = null;
+
+    @ApiProperty({ required: false })
+    @Transform(({ value }) => MapperService.mapArray(value))
+    @IsArray()
+    @IsNotEmpty({ each: true })
+    @IsString({ each: true })
+    @IsOptional()
+    tagIds?: string[] = null;
+
     @ApiProperty({
         type: "file",
         required: false,
     })
-    imageUrl: Express.Multer.File;
+    image: Express.Multer.File;
 }

@@ -75,7 +75,7 @@ export class BlogsController {
       @Body() createBlogDto: CreateBlogDto,
       @UploadedFile() image: Express.Multer.File,
   ) {
-      if (image) createBlogDto.featuredImageUrl = image;
+      if (image) createBlogDto.image = image;
 
       return this.cudBlogService.create(createBlogDto);
   }
@@ -90,7 +90,7 @@ export class BlogsController {
       @Query() blogDetailParams: BlogDetailParamDto,
   ) {
       return this.getBlogService.findByIdWithDetails(
-          parseInt(id),
+          id,
           blogDetailParams,
       );
   }
@@ -110,10 +110,10 @@ export class BlogsController {
       @Body() updateBlogDto: UpdateBlogDto,
       @UploadedFile() image: Express.Multer.File,
   ) {
-      if (image) updateBlogDto.featuredImageUrl = image;
+      if (image) updateBlogDto.image = image;
 
       return this.cudBlogService.update({
-          where: { id: parseInt(id) },
+          where: { id },
           data: updateBlogDto,
       });
   }
@@ -127,6 +127,6 @@ export class BlogsController {
   @CheckPolicies(ManageBlogHandler)
   @UseInterceptors(new TransformDataInterceptor(CudBlogResponseDto))
   async deleteBlog(@Param("id") id: string) {
-      return this.cudBlogService.delete(parseInt(id));
+      return this.cudBlogService.delete(id);
   }
 }

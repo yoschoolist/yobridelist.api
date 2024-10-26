@@ -4,14 +4,14 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaModule } from './database/prisma.module';
 import { UsersModule } from './resources/users/users.module';
-import { VendorsModule } from './resources/vendors/vendors.module';
+import { BlogsModule } from './resources/blogs/blogs.module';
+/*import { VendorsModule } from './resources/vendors/vendors.module';
 import { BookingsModule } from './resources/bookings/bookings.module';
-import { BlogModule } from './resources/blogs/blogs.module';
 import { ForumModule } from './resources/forum/forum.module';
 import { MessagesModule } from './resources/messages/messages.module';
 import { ReviewsModule } from './resources/reviews/reviews.module';
 import { LocationsModule } from './resources/locations/locations.module';
-import { ServicesModule } from './resources/services/services.module';
+import { ServicesModule } from './resources/services/services.module';*/
 import { CaslModule } from './casl/casl.module';
 
 @Module({
@@ -22,14 +22,14 @@ import { CaslModule } from './casl/casl.module';
     PrismaModule,
     CaslModule,
     UsersModule,
-    VendorsModule,
+    BlogsModule,
+    /*VendorsModule,
     BookingsModule,
-    BlogModule,
     ForumModule,
     MessagesModule,
     ReviewsModule,
     LocationsModule,
-    ServicesModule,
+    ServicesModule,*/
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -19,7 +19,7 @@ export class GetBlogServiceImpl implements GetBlogService {
     constructor(private readonly prisma: PrismaService) {}
 
     async findByIdWithDetails(
-        id: number,
+        id: string,
         detailParams?: BlogDetailParamDto,
     ): Promise<BlogDetailResponseDto> {
         let includeQuery: Prisma.BlogPostInclude = undefined;

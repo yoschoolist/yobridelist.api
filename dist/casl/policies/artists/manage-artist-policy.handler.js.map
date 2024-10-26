@@ -1,0 +1,1 @@
+{"version":3,"file":"manage-artist-policy.handler.js","sourceRoot":"","sources":["../../../../src/casl/policies/artists/manage-artist-policy.handler.ts"],"names":[],"mappings":";;;AAEA,qDAAkD;AAElD,MAAa,mBAAmB;IAC5B,MAAM,CAAC,OAAmB;QACtB,OAAO,OAAO,CAAC,GAAG,CAAC,kBAAM,CAAC,MAAM,EAAE,QAAQ,CAAC,CAAC;IAChD,CAAC;CACJ;AAJD,kDAIC"}

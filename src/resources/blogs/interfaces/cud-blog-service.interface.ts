@@ -14,5 +14,5 @@ export interface CudBlogService {
         data: UpdateBlogDto;
     }): Promise<CudBlogResponseDto>;
 
-    delete(id: number): Promise<CudBlogResponseDto>;
+    delete(id: string): Promise<CudBlogResponseDto>;
 }

@@ -15,29 +15,43 @@ const core_1 = require("@nestjs/core");
 const casl_ability_factory_1 = require("../casl-ability.factory");
 const check_policies_decorator_1 = require("../decorators/check-policies.decorator");
 let PoliciesGuard = class PoliciesGuard {
-    constructor(reflector, caslAbilityFactory) {
-        this.reflector = reflector;
+    constructor(caslAbilityFactory, reflector, moduleRef) {
         this.caslAbilityFactory = caslAbilityFactory;
+        this.reflector = reflector;
+        this.moduleRef = moduleRef;
     }
-    async canActivate(context) {
-        const policyHandlers = this.reflector.get(check_policies_decorator_1.CHECK_POLICIES_KEY, context.getHandler()) || [];
-        const { user } = context.switchToHttp().getRequest();
-        if (!user)
-            return false;
-        const ability = this.caslAbilityFactory.createForUser(user);
-        return policyHandlers.every((handler) => this.execPolicyHandler(handler, ability));
-    }
-    execPolicyHandler(handler, ability) {
-        if (typeof handler === 'function') {
-            return handler(ability);
+    async canActivate(ctx) {
+        const policiesHandlersRef = this.reflector.get(check_policies_decorator_1.CHECK_POLICIES_KEY, ctx.getHandler()) || [];
+        const policiesHandlersRefLength = policiesHandlersRef.length;
+        if (policiesHandlersRefLength === 0)
+            return true;
+        const contextId = core_1.ContextIdFactory.create();
+        this.moduleRef.registerRequestByContextId(ctx.switchToHttp().getRequest(), contextId);
+        const policyHandlers = [];
+        for (let i = 0; i < policiesHandlersRefLength; i++) {
+            const policyHandlerRef = policiesHandlersRef[i];
+            const policyScope = this.moduleRef.introspect(policyHandlerRef).scope;
+            let policyHandler;
+            if (policyScope === common_1.Scope.DEFAULT) {
+                policyHandler = this.moduleRef.get(policyHandlerRef, {
+                    strict: false,
+                });
+            }
+            else {
+                policyHandler = await this.moduleRef.resolve(policyHandlerRef, contextId, { strict: false });
+            }
+            policyHandlers.push(policyHandler);
         }
-        return handler.handle(ability);
+        const { user } = ctx.switchToHttp().getRequest();
+        const ability = this.caslAbilityFactory.createForUser(user);
+        return policyHandlers.every((handler) => handler.handle(ability));
     }
 };
 exports.PoliciesGuard = PoliciesGuard;
 exports.PoliciesGuard = PoliciesGuard = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [core_1.Reflector,
-        casl_ability_factory_1.CaslAbilityFactory])
+    __metadata("design:paramtypes", [casl_ability_factory_1.CaslAbilityFactory,
+        core_1.Reflector,
+        core_1.ModuleRef])
 ], PoliciesGuard);
 //# sourceMappingURL=policies.guard.js.map

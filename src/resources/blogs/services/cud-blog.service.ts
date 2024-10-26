@@ -50,12 +50,12 @@ export class CudBlogServiceImpl implements CudBlogService {
                     author: {
                         connect: { id: authorId },
                     },
-                    categories: categoryIds ? {
-                        connect: categoryIds.map(id => ({ id })),
-                    } : undefined,
-                    tags: tagIds ? {
-                        connect: tagIds.map(id => ({ id })),
-                    } : undefined,
+                    categories: {
+                        connect: this.prisma.toPrismaConnectObject(categoryIds),
+                    },
+                    tags: {
+                        connect: this.prisma.toPrismaConnectObject(tagIds),
+                    },
                 },
             })
             .catch(() => {
@@ -65,18 +65,17 @@ export class CudBlogServiceImpl implements CudBlogService {
 
                 throw new InternalServerErrorException();
             });
-    }
-    async update(params: {
+    }    async update(params: {
         where: Prisma.BlogPostWhereUniqueInput;
         data: UpdateBlogDto;
     }): Promise<CudBlogResponseDto> {
         const { where, data } = params;
-        const { imageUrl } = data;
-        delete data.imageUrl;
+        const { image } = data;
+        delete data.image;
 
         // if not upload image, then no need to query old blog to compare later
         const oldBlog =
-            imageUrl &&
+            image &&
             (await this.prisma.blogPost
                 .findUniqueOrThrow({
                     where,
@@ -88,9 +87,9 @@ export class CudBlogServiceImpl implements CudBlogService {
 
         // upload image
         const uploadResponse =
-            imageUrl &&
+            image &&
             (await this.uploadService
-                .uploadFile(imageUrl, {
+                .uploadFile(image, {
                     folder: UploadFolder.BLOG_IMAGE,
                 })
                 .catch(() => undefined));
@@ -127,7 +126,7 @@ export class CudBlogServiceImpl implements CudBlogService {
         return updatedBlog;
     }
 
-    async delete(id: number): Promise<CudBlogResponseDto> {
+    async delete(id: string): Promise<CudBlogResponseDto> {
         const blog = await this.prisma.blogPost
             .delete({ where: { id } })
             .catch((error) => {
@@ -138,7 +137,7 @@ export class CudBlogServiceImpl implements CudBlogService {
                 }
             });
 
-        // if blog have an image, delete it
+        // if artist have an image, delete it
         if (blog.imageId) this.uploadService.deleteFile(blog.imageId);
 
         return blog;

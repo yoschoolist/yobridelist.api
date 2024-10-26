@@ -6,7 +6,6 @@ import { MailModule } from "src/mail/mail.module";
 import { UsersModule } from "src/resources/users/users.module";
 import { GoogleStrategy } from "./strategy/google.strategy";
 import { FacebookStrategy } from "./strategy/facebook.strategy";
-import { GithubStrategy } from "./strategy/github.strategy";
 import { AUTH_SERVICES } from "./interfaces/constants";
 import { SocialAuthServiceImpl } from "./services/social-auth.service";
 import { ConfirmEmailServiceImpl } from "./services/confirm-email.service";
@@ -54,7 +53,6 @@ const resetPasswordService = {
     providers: [
         GoogleStrategy,
         FacebookStrategy,
-        GithubStrategy,
         authService,
         socialAuthService,
         confirmEmailService,

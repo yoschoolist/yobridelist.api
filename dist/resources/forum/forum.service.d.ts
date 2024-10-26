@@ -17,7 +17,7 @@ export declare class ForumService {
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        description: string | null;
         slug: string;
+        description: string | null;
     })[]>;
 }

@@ -1,0 +1,1 @@
+{"version":3,"file":"manage-song-policy.handler.js","sourceRoot":"","sources":["../../../../src/casl/policies/songs/manage-song-policy.handler.ts"],"names":[],"mappings":";;;AAEA,qDAAkD;AAElD,MAAa,iBAAiB;IAC1B,MAAM,CAAC,OAAmB;QACtB,OAAO,OAAO,CAAC,GAAG,CAAC,kBAAM,CAAC,MAAM,EAAE,MAAM,CAAC,CAAC;IAC9C,CAAC;CACJ;AAJD,8CAIC"}

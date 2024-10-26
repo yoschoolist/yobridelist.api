@@ -1,0 +1,1 @@
+{"version":3,"file":"read-admin-dashboard-policy.handler.js","sourceRoot":"","sources":["../../../src/casl/policies/read-admin-dashboard-policy.handler.ts"],"names":[],"mappings":";;;AACA,kDAAkD;AAGlD,MAAa,yBAAyB;IAClC,MAAM,CAAC,OAAmB;QACtB,OAAO,OAAO,CAAC,GAAG,CAAC,kBAAM,CAAC,IAAI,EAAE,WAAW,CAAC,CAAC;IACjD,CAAC;CACJ;AAJD,8DAIC"}

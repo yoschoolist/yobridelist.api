@@ -1,0 +1,1 @@
+{"version":3,"file":"read-account-policy.handler.js","sourceRoot":"","sources":["../../../../src/casl/policies/users/read-account-policy.handler.ts"],"names":[],"mappings":";;;AACA,qDAAkD;AAGlD,MAAa,kBAAkB;IAC3B,MAAM,CAAC,OAAmB;QACtB,OAAO,OAAO,CAAC,GAAG,CAAC,kBAAM,CAAC,IAAI,EAAE,SAAS,CAAC,CAAC;IAC/C,CAAC;CACJ;AAJD,gDAIC"}

@@ -6,7 +6,7 @@ import { Exclude, Expose, plainToInstance } from "class-transformer";
 export class BlogResponseDto implements BlogPost {
     @ApiProperty()
     @Expose()
-    id: number;
+    id: string;
 
     @ApiProperty()
     @Expose()
@@ -30,7 +30,8 @@ export class BlogResponseDto implements BlogPost {
     publishedAt: Date;
     excerpt: string;
     status: string;
-    authorId: number;
+    authorId: string;
+    views: number;
     imageId: string;
 
     static toBlogResponseDto(blog: BlogPost | BlogPost[]): any {
