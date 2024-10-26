@@ -43,21 +43,49 @@ enum ForumPostStatus {
   deleted
 }
 
-enum UserRole {
-  member
-  manager
-  admin
-  superadmin
+
+enum TokenType {
+  CONFIRM_EMAIL
+  RESET_PASSWORD
+  REFRESH_TOKEN
 }
+
+enum UserRole {
+  MEMBER
+  MANAGER
+  ADMIN
+  SUPERADMIN
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum BlogStatus {
+  PUBLISHED
+  DRAFT
+  PRIVATE
+}
+
 
 // Rest of the schema remains the same, updating User model
 model User {
   id            Int             @id @default(autoincrement())
   email         String          @unique @db.VarChar(255)
-  passwordHash  String          @db.VarChar(255)
-  fullName      String          @db.VarChar(100)
-  role          UserRole        @default(member)
+  hashedPassword        String?        @db.Text
+  name      String          @db.VarChar(100)
   isActive      Boolean         @default(true)
+  imageUrl              String?        @db.Text
+  imageId               String?
+  emailConfirmed        Boolean        @default(false)
+  locked                Boolean        @default(false)
+  role                  UserRole           @default(MEMBER)
+  birthDate             DateTime?      @db.Date
+  gender                Gender?     
+  about                 String?        @db.Text
+  alias                 String?
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
   vendor        Vendor?
@@ -68,10 +96,23 @@ model User {
   messages      Message[]
   forumTopics   ForumTopic[]
   forumPosts    ForumPost[]
+  tokens        Token[]
 
   @@map("users")
 }
 
+model Token {
+  id            Int             @id @default(autoincrement())
+  token       String     
+  expiryTime  DateTime
+  type        TokenType
+  userId      Int
+
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("tokens")
+  @@unique([token, userId])
+}
 
 
 
@@ -217,7 +258,8 @@ model BlogPost {
   slug              String       @unique @db.VarChar(255)
   content           String
   excerpt           String?
-  featuredImageUrl  String?      @db.VarChar(255)
+  imageUrl  String?      @db.VarChar(255)
+  imageId  String? 
   authorId          Int
   author            User         @relation(fields: [authorId], references: [id])
   status            String       @default("draft") @db.VarChar(20)
@@ -301,3 +343,5 @@ model ForumPost {
 
   @@map("forum_posts")
 }
+
+

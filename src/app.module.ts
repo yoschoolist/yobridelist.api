@@ -6,7 +6,7 @@ import { PrismaModule } from './database/prisma.module';
 import { UsersModule } from './resources/users/users.module';
 import { VendorsModule } from './resources/vendors/vendors.module';
 import { BookingsModule } from './resources/bookings/bookings.module';
-import { BlogModule } from './resources/blog/blog.module';
+import { BlogModule } from './resources/blogs/blogs.module';
 import { ForumModule } from './resources/forum/forum.module';
 import { MessagesModule } from './resources/messages/messages.module';
 import { ReviewsModule } from './resources/reviews/reviews.module';
