@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { DatabaseModule } from './database/database.module';
+import { PrismaModule } from './database/prisma.module';
 import { UsersModule } from './resources/users/users.module';
 import { VendorsModule } from './resources/vendors/vendors.module';
 import { BookingsModule } from './resources/bookings/bookings.module';
@@ -19,7 +19,7 @@ import { CaslModule } from './casl/casl.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    DatabaseModule,
+    PrismaModule,
     CaslModule,
     UsersModule,
     VendorsModule,
